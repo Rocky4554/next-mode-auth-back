@@ -2,6 +2,9 @@ import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+const authRoutes = require('./routes/auth')
+const taskRoutes = require('./routes/tasks')
+
 
 dotenv.config();
 const app = express();
@@ -34,6 +37,7 @@ app.get("/", (req, res) => {
   res.send("Backend API is live ");
 });
 
+
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB connected"))
@@ -43,6 +47,9 @@ mongoose
 if (process.env.NODE_ENV !== "production") {
   app.listen(5000, () => console.log("Server running on port 5000"));
 }
+
+app.use('/api/auth',authRoutes);
+app.use('/api/tasks',taskRoutes);
 
 // Export for Vercel
 export default app;
