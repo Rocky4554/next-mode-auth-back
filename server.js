@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 
 dotenv.config();
+const app = express();
 
 const allowedOrigins = [
   "http://localhost:3000",                  
@@ -25,7 +26,7 @@ app.use(
   })
 );
 
-const app = express();
+
 
 app.use(express.json());
 
