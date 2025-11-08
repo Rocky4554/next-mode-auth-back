@@ -1,9 +1,10 @@
-import express from "express";
-import cors from "cors";
-import mongoose from "mongoose";
-import dotenv from "dotenv";
-const authRoutes = require('./routes/auth')
-const taskRoutes = require('./routes/tasks')
+const express = require("express");
+const cors = require("cors");
+const mongoose = require("mongoose");
+const dotenv = require("dotenv");
+const authRoutes = require("./routes/auth");
+const taskRoutes = require("./routes/tasks");
+const cookieParser = require("cookie-parser");
 
 
 dotenv.config();
@@ -16,22 +17,13 @@ const allowedOrigins = [
 
 app.use(
   cors({
-    origin: (origin, callback) => {
-    
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-    credentials: true, 
-
+    origin: allowedOrigins,
+    credentials: true,
   })
 );
 
-
-
 app.use(express.json());
+app.use(cookieParser());
 
 app.get("/", (req, res) => {
   res.send("Backend API is live ");
@@ -49,7 +41,7 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 app.use('/api/auth',authRoutes);
-app.use('/api/tasks',taskRoutes);
+app.use('/api/tasks' ,taskRoutes);
 
 // Export for Vercel
 export default app;
